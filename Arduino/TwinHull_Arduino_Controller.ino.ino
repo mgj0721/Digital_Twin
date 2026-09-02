@@ -180,6 +180,9 @@ void loop() {
 
       // -----------------------------------------------
       // Tilt
+      //
+      // 실제 카메라 장착 방향에 맞춰
+      // I / K 방향 반전
       // -----------------------------------------------
 
       case 'I':
@@ -343,15 +346,20 @@ void panRight() {
 // =====================================================
 // Tilt Servo
 // =====================================================
+// 실제 동작 기준으로 방향을 반전함.
+//
+// I → tiltUp() → 각도 감소 → 실제 위로
+// K → tiltDown() → 각도 증가 → 실제 아래로
+// =====================================================
 
 void tiltUp() {
 
-  if (tiltAngle < TILT_MAX) {
+  if (tiltAngle > TILT_MIN) {
 
-    tiltAngle += SERVO_STEP;
+    tiltAngle -= SERVO_STEP;
 
-    if (tiltAngle > TILT_MAX) {
-      tiltAngle = TILT_MAX;
+    if (tiltAngle < TILT_MIN) {
+      tiltAngle = TILT_MIN;
     }
 
     tiltServo.write(tiltAngle);
@@ -365,12 +373,12 @@ void tiltUp() {
 
 void tiltDown() {
 
-  if (tiltAngle > TILT_MIN) {
+  if (tiltAngle < TILT_MAX) {
 
-    tiltAngle -= SERVO_STEP;
+    tiltAngle += SERVO_STEP;
 
-    if (tiltAngle < TILT_MIN) {
-      tiltAngle = TILT_MIN;
+    if (tiltAngle > TILT_MAX) {
+      tiltAngle = TILT_MAX;
     }
 
     tiltServo.write(tiltAngle);
